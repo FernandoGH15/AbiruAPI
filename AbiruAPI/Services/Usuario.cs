@@ -1,57 +1,58 @@
 ﻿using AbiruAPI.Transfers;
-using System.Linq;
 
 namespace AbiruAPI.Models
 {
     public partial class Usuario
     {
-        //Registro de Usuario
+        //Registro de usuario
         public static UsuarioDT Registrar(UsuarioDT userDT)
         {
             AbiruContext db = new AbiruContext();
-            Usuario uDT = new Usuario()
+            Usuario user = new Usuario()
             {
                 Nombre = userDT.Nombre,
-                Dni = userDT.Dni,
-                Email = userDT.Email,
+                Apellido = userDT.Apellido,
                 Distrito = userDT.Distrito,
-                Pass = userDT.Pass,
-                Categoria = userDT.Categoria
+                Dni = userDT.Dni,
+                Correo = userDT.Correo,
+                Pass = userDT.Pass
             };
-            db.Usuarios.Add(uDT);
+            db.Usuarios.Add(user);
             db.SaveChanges();
-            userDT.ID = uDT.IdUser;
+            userDT.IdUsuario = user.IdUsuario;
             return userDT;
         }
-        //Procedimiento de login
-        public static UsuarioDT2 Logearse(UsuarioDT2 userDT)
+
+        //Login de usuario
+
+        public static UsuarioDT2 Login (UsuarioDT2 userDT)
         {
             AbiruContext db = new AbiruContext();
-            Usuario uDT = db.Usuarios.Where(a => a.Email.Equals(userDT.Email) && a.Pass.Equals(userDT.Pass)).FirstOrDefault();
-            if (uDT == null)
+            Usuario user = db.Usuarios.Where(a => a.Correo.Equals(userDT.Correo) && a.Pass.Equals(userDT.Pass)).FirstOrDefault();
+            if (user == null)
                 return null;
             else
                 return new UsuarioDT2()
                 {
-                    ID = uDT.IdUser,
-                    Categoria = uDT.Categoria,
-                    Nombre = uDT.Nombre
+                    IdUsuario = user.IdUsuario,
+                    Nombre  =   user.Nombre,
+                    Apellido =  user.Apellido,
+                    Distrito = (int)user.Distrito
                 };
         }
-        //Procedimiento de olvide contraseña
-        public static UsuarioDT Olvidarse(UsuarioDT userDT)
+
+        //Olvide de usuario
+        public static UsuarioDT3 Olvido (UsuarioDT3 userDT)
         {
             AbiruContext db = new AbiruContext();
-            Usuario uDT = db.Usuarios.Where(a => a.Email.Equals(userDT.Email) || a.Nombre.Equals(userDT.Nombre)).FirstOrDefault();
-            if (uDT == null)
+            Usuario user = db.Usuarios.Where(a => a.Dni.Equals(userDT.Dni) || a.Correo.Equals(userDT.Correo)).FirstOrDefault();
+            if (user == null)
                 return null;
             else
-                return new UsuarioDT()
+                return new UsuarioDT3()
                 {
-                    Email = uDT.Email,
-                    Nombre = uDT.Nombre
+                    Pass = user.Pass
                 };
-        }  
-
+        }
     }
 }

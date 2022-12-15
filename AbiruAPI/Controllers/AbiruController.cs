@@ -1,80 +1,80 @@
-﻿using AbiruAPI.Models;
-using AbiruAPI.Transfers;
+﻿using AbiruAPI.Transfers;
+using AbiruAPI.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AbiruAPI.Controllers
 {
-    [EnableCors("ABIRU")]
+    [EnableCors("ALIEXPRESSVUE")]
     [Route("api/[controller]")]
     [ApiController]
     public class AbiruController : ControllerBase
     {
-        //Registro de usuario
+        //Aqui van todos los controladores API necesarios para el funcionamiento
+        //Controladores de Usuario (Registro, Login, Olvido)
         [HttpPost]
         [Route ("Registrar")]
-        public UsuarioDT Registrar(UsuarioDT userDT)
+        public UsuarioDT Registrar(UsuarioDT usuarioDT)
         {
-            return Usuario.Registrar(userDT);
+            return Usuario.Registrar(usuarioDT);
         }
+        //https://localhost:7048/api/Abiru/Registrar
 
-        //Login usuario (sin proteccion contra)
         [HttpPost]
         [Route ("Login")]
-        public UsuarioDT2 Logeo(UsuarioDT2 userDT2)
+        public UsuarioDT2 Login(UsuarioDT2 usuarioDT)
         {
-            return Usuario.Logearse(userDT2);
+            return Usuario.Login(usuarioDT);
         }
+        //https://localhost:7048/api/Abiru/Login
 
-        //Perdida de acceso
         [HttpPost]
         [Route ("Olvido")]
-        public UsuarioDT Olvido(UsuarioDT userDT)
+        public UsuarioDT3 Olvido(UsuarioDT3 usuarioDT)
         {
-            return Usuario.Olvidarse(userDT);
+            return Usuario.Olvido(usuarioDT);
         }
+        //https://localhost:7048/api/Abiru/Olvido
 
-        //Obtención de ultimas busquedas (prototipado)
+
+        //Controladores de Distrito (Identificación)
         [HttpGet]
-        [Route ("ShowLast")]
-        public IEnumerable<ColegioDT2> Obtener(int userID)
-        {
-            return UsuarioSearch.Obtencion(userID);
-        }
-
-        //Mostrar colegios recomendados (base a distrito)
-        [HttpGet]
-        [Route ("ShowRecomendado")]
-        public IEnumerable<ColegioDT2> Recomendado(int userID)
-        {
-            return Colegio.Recomendado(userID);
-        }
-
-        //Mostrar el detallado de un colegio (visualización por envio de variable)
-        [HttpGet]
-        [Route("Detallado")]
-        public ColegioDT Detalle(int colID)
-        {
-            return Colegio.Detallado(colID);
-        }
-
-        //Resultados de busqueda básica
-        [HttpGet]
-        [Route("BusquedaB")]
-        public IEnumerable<ColegioDT3> BusquedaB (string nombre, string grado, string tipo)
-        {
-            return Colegio.BusquedaB(nombre, grado, tipo);
-        }
-
-
-
-
-        //Listado distritos x nombres
-        [HttpGet]
-        [Route("ListaDist")]
-        public IEnumerable<DistritoDT> ListaD()
+        [Route ("ListarDistrito")]
+        public IEnumerable<DistritoDT> Listar()
         {
             return Distrito.Listado();
         }
+        //https://localhost:7048/api/Abiru/ListarDistrito
+
+
+        //Controladores de Colegio (se especifica)
+        [HttpGet]
+        [Route ("Recomendado")]
+        public IEnumerable<ColegioDTB> Recomendado(int distrito)
+        {
+            return Colegio.Recomendado(distrito);
+        }
+        //https://localhost:7048/api/Abiru/Recomendado?distrito=15
+
+        [HttpGet]
+        [Route ("Detallado")]
+        public ColegioDT Detallado (int id)
+        {
+            return Colegio.Detallado(id);
+        }
+        //https://localhost:7048/api/Abiru/Detallado?id=1
+
+
+
+        //Controladores de UsuarioSearch (función adicional)
+
+        [HttpGet]
+        [Route ("Reciente")]
+        public IEnumerable<UsuarioSearchDT> Reciente(int id)
+        {
+            return UsuarioSearch.Reciente(id);
+        }
+
+        //Controladores de Reclamos (teórico)
     }
 }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace AbiruAPI.Models
-{
+namespace AbiruAPI.Models;
+
 public partial class AbiruContext : DbContext
 {
     public AbiruContext()
@@ -19,9 +19,7 @@ public partial class AbiruContext : DbContext
 
     public virtual DbSet<Distrito> Distritos { get; set; }
 
-    public virtual DbSet<Errores> Errores { get; set; }
-
-    public virtual DbSet<Reconocimiento> Reconocimientos { get; set; }
+    public virtual DbSet<Reclamo> Reclamos { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
@@ -35,42 +33,65 @@ public partial class AbiruContext : DbContext
     {
         modelBuilder.Entity<Colegio>(entity =>
         {
-            entity.HasKey(e => e.IdColegio).HasName("PK__Colegio__BECA32894A94A491");
+            entity.HasKey(e => e.IdColegio).HasName("PK__Colegio__BECA328995FCB47F");
 
             entity.ToTable("Colegio");
 
-            entity.Property(e => e.Costo).HasColumnType("numeric(6, 2)");
+            entity.Property(e => e.Costo).HasColumnType("numeric(7, 2)");
             entity.Property(e => e.Direccion)
-                .HasMaxLength(60)
+                .HasMaxLength(120)
                 .IsUnicode(false);
-            entity.Property(e => e.Galeria)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Grado)
-                .HasMaxLength(11)
-                .IsUnicode(false);
-            entity.Property(e => e.ImagenMain)
+            entity.Property(e => e.DireccionX).HasColumnType("numeric(18, 16)");
+            entity.Property(e => e.DireccionY).HasColumnType("numeric(18, 16)");
+            entity.Property(e => e.Genero)
                 .HasMaxLength(20)
                 .IsUnicode(false);
-            entity.Property(e => e.MallaCurr).HasColumnType("text");
-            entity.Property(e => e.Matricula)
-                .HasMaxLength(40)
+            entity.Property(e => e.Grado)
+                .HasMaxLength(25)
                 .IsUnicode(false);
+            entity.Property(e => e.Horario).HasColumnType("text");
+            entity.Property(e => e.ImagenDirect)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenInfo)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenPrinc)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenRecoA)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenRecoB)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenRecoC)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenResA)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ImagenResB)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Informacion).HasColumnType("text");
+            entity.Property(e => e.MallaCurricular).HasColumnType("text");
+            entity.Property(e => e.Mision).HasColumnType("text");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(60)
                 .IsUnicode(false);
-            entity.Property(e => e.Reconocimientos).HasColumnType("text");
-            entity.Property(e => e.Resena1).HasColumnType("text");
-            entity.Property(e => e.Resena2).HasColumnType("text");
+            entity.Property(e => e.Reconocimiento).HasColumnType("text");
+            entity.Property(e => e.Religion).HasColumnType("text");
+            entity.Property(e => e.ResenaA).HasColumnType("text");
+            entity.Property(e => e.ResenaB).HasColumnType("text");
             entity.Property(e => e.Tipo)
-                .HasMaxLength(8)
+                .HasMaxLength(20)
                 .IsUnicode(false);
-            entity.Property(e => e.UbicacionLat).HasColumnType("numeric(20, 10)");
-            entity.Property(e => e.UbicacionLong).HasColumnType("numeric(20, 10)");
+            entity.Property(e => e.Vision).HasColumnType("text");
 
             entity.HasOne(d => d.DistritoNavigation).WithMany(p => p.Colegios)
                 .HasForeignKey(d => d.Distrito)
-                .HasConstraintName("FK__Colegio__Distrit__29572725");
+                .HasConstraintName("FK__Colegio__Distrit__398D8EEE");
         });
 
         modelBuilder.Entity<Distrito>(entity =>
@@ -84,81 +105,70 @@ public partial class AbiruContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Errores>(entity =>
+        modelBuilder.Entity<Reclamo>(entity =>
         {
-            entity.HasKey(e => e.IdError).HasName("PK__Errores__C8A4CFD9FFB49A29");
+            entity.HasKey(e => e.IdReclamo).HasName("PK__Reclamos__19682C66EC20B8D5");
 
             entity.Property(e => e.Descripcion).HasColumnType("text");
-            entity.Property(e => e.Fecha).HasColumnType("date");
             entity.Property(e => e.Titulo)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-        });
 
-        modelBuilder.Entity<Reconocimiento>(entity =>
-        {
-            entity.HasKey(e => e.IdReconoce).HasName("PK__Reconoci__F7F565AC94C89855");
-
-            entity.ToTable("Reconocimiento");
-
-            entity.Property(e => e.Imagen)
-                .HasMaxLength(40)
-                .IsUnicode(false);
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(60)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.IdColeNavigation).WithMany(p => p.ReconocimientosNavigation)
-                .HasForeignKey(d => d.IdCole)
-                .HasConstraintName("FK__Reconocim__IdCol__2C3393D0");
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Reclamos)
+                .HasForeignKey(d => d.IdUsuario)
+                .HasConstraintName("FK__Reclamos__IdUsua__403A8C7D");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.IdUser).HasName("PK__Usuario__B7C9263845D84CEE");
+            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__5B65BF971E2CF17B");
 
             entity.ToTable("Usuario");
 
+            entity.Property(e => e.Apellido)
+                .HasMaxLength(40)
+                .IsUnicode(false);
             entity.Property(e => e.Categoria)
                 .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.Correo)
+                .HasMaxLength(60)
                 .IsUnicode(false);
             entity.Property(e => e.Dni)
-                .HasMaxLength(8)
-                .IsUnicode(false)
+                .HasColumnType("numeric(8, 0)")
                 .HasColumnName("DNI");
-            entity.Property(e => e.Email)
-                .HasMaxLength(45)
-                .IsUnicode(false);
             entity.Property(e => e.Nombre)
-                .HasMaxLength(50)
+                .HasMaxLength(40)
                 .IsUnicode(false);
             entity.Property(e => e.Pass)
-                .HasMaxLength(40)
+                .HasMaxLength(50)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.DistritoNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.Distrito)
-                .HasConstraintName("FK__Usuario__Distrit__267ABA7A");
+                .HasConstraintName("FK__Usuario__Distrit__36B12243");
         });
 
         modelBuilder.Entity<UsuarioSearch>(entity =>
         {
-            entity.HasKey(e => e.IdIdenti).HasName("PK__UsuarioS__5E5EFED90D4CD6EC");
+            entity.HasKey(e => e.IdUs).HasName("PK__UsuarioS__B7700246612ACD5E");
 
             entity.ToTable("UsuarioSearch");
 
+            entity.Property(e => e.IdUs).HasColumnName("IdUS");
+
             entity.HasOne(d => d.IdColegioNavigation).WithMany(p => p.UsuarioSearches)
                 .HasForeignKey(d => d.IdColegio)
-                .HasConstraintName("FK__UsuarioSe__IdCol__300424B4");
+                .HasConstraintName("FK__UsuarioSe__IdCol__3D5E1FD2");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.UsuarioSearches)
                 .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("FK__UsuarioSe__IdUsu__2F10007B");
+                .HasConstraintName("FK__UsuarioSe__IdUsu__3C69FB99");
         });
 
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-}
 }
