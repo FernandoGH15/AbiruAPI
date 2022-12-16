@@ -6,7 +6,7 @@ namespace AbiruAPI.Models
     {
         //Registro de usuario
         public static UsuarioDT Registrar(UsuarioDT userDT)
-        {
+        { 
             AbiruContext db = new AbiruContext();
             Usuario user = new Usuario()
             {
@@ -15,7 +15,7 @@ namespace AbiruAPI.Models
                 Distrito = userDT.Distrito,
                 Dni = userDT.Dni,
                 Correo = userDT.Correo,
-                Pass = userDT.Pass
+                Pass = userDT.Pass                                                                                                                                                          
             };
             db.Usuarios.Add(user);
             db.SaveChanges();
@@ -38,9 +38,9 @@ namespace AbiruAPI.Models
                     Nombre  =   user.Nombre,
                     Apellido =  user.Apellido,
                     Distrito = (int)user.Distrito
-                };
+                };  
         }
-
+      
         //Olvide de usuario
         public static UsuarioDT3 Olvido (UsuarioDT3 userDT)
         {

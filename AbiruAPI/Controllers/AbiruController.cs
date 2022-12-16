@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AbiruAPI.Controllers
 {
-    [EnableCors("ALIEXPRESSVUE")]
+    [EnableCors("ABIRU")]
     [Route("api/[controller]")]
     [ApiController]
     public class AbiruController : ControllerBase
